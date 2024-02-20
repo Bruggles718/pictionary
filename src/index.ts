@@ -117,12 +117,20 @@ io.on("connection", (socket) => {
     };
     socket.to(roomID).emit("playersConnected", { room: playersConnectedRoomToSend, playerConnectedID: playerDisconnect.m_id});
     socket.emit("playersConnected", { room: playersConnectedRoomToSend });
+    let everybodyGuessed = true;
+    for (let id in room.m_guessedTheWord) {
+      if (id !== room.m_currentArtistID) {
+        everybodyGuessed = everybodyGuessed && room.m_guessedTheWord[id];
+      }
+    }
     if (room.m_started && room.m_currentArtistID === playerDisconnect.m_id && room.m_currentlyDrawing && room.playerCount() > 1) {
       room.setTimeRemaining(0);
     } else if (room.m_started && room.m_currentArtistID === playerDisconnect.m_id  && room.playerCount() > 1) {
       room.updateCurrentArtist();
       updateArtistClient(room.m_id);
-    } else if (room.m_started) {
+    } else if (room.m_started && room.m_currentArtistID !== playerDisconnect.m_id && everybodyGuessed && room.playerCount() > 1) {
+      room.setTimeRemaining(0);
+    } else if (room.m_started && room.playerCount() <= 1) {
       endGame(room.m_id);
     }
   });

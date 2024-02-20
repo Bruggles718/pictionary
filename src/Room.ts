@@ -85,8 +85,11 @@ export class Room {
     delete this.m_players[i_playerID];
     this.m_playerOrder.splice(this.m_playerOrder.indexOf(i_playerID), 1);
     if (this.m_artistQueueIndex >= this.m_playerOrder.length) {
-      this.m_artistQueueIndex = this.m_playerOrder.length - 1;
+      this.m_artistQueueIndex = 0;
+      this.m_roundsRemaining--;
     }
+    delete this.m_scores[i_playerID];
+    delete this.m_guessedTheWord[i_playerID];
   }
 
   /**
