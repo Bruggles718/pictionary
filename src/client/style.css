@@ -1,0 +1,156 @@
+.swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.swatch.active {
+    border-style: solid;
+    border-width: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.drawing-board {
+    width: 400px;
+    height: 300px;
+    border: 5px solid #000000;
+    background-color: rgb(98, 98, 98);
+    display: inline-block;
+}
+
+.drawing-board.line {
+  cursor: none;
+}
+
+.brush{
+  position: fixed;
+  width: 5px;
+  height: 5px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  cursor: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.drawing-board.fill {
+  cursor: url(/images/paintbucket.cur), auto;
+}
+
+.lineWidthBox {
+    width:50px;
+}
+
+.gameArea {
+    display: none;
+}
+
+#overlay {
+    position: relative; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 400px; /* Full width (cover the whole page) */
+    height: 305px; /* Full height (cover the whole page) */
+    top: calc(-5px - 100%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+}
+
+#word-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    color: rgb(0, 255, 0);
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+#end-word-overlay {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    font-size: 20px;
+    color: rgb(255, 0, 0);
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+#chatbox {
+    width: 300px;
+    height: 252px;
+    overflow:auto;
+}
+
+.dark {
+    color: white;
+    background-color: #242424;
+}
+
+input[type=text].dark {
+    color: white;
+    background-color: #4d4d4d;
+}
+
+input[type=color].dark {
+    color: white;
+    background-color: #4d4d4d;
+}
+
+button.dark {
+    color: white;
+    background-color: #4d4d4d;
+}
+
+.message.bgplainv1 {
+    background-color: white;
+}
+
+.message.bgplainv1.dark {
+    background-color: #242424;
+}
+
+.message.bgplainv2 {
+    background-color: #ebebeb;
+}
+
+.message.bgplainv2.dark {
+    background-color: #1b1b1b;
+}
+
+.message.txlightGreen {
+    color: #42f57e;
+}
+
+.message.txlightBlue {
+    color: #007bff;
+}
+
+.message.txgreen {
+    color: rgb(0, 255, 0);
+}
+
+.message.txred {
+    color: red;
+}
+
+.message.txplain {
+    color: black;
+}
+
+.message.txplain.dark {
+    color: white;
+}
