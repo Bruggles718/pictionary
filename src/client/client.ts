@@ -662,6 +662,20 @@ export function startGame() {
   });
 }
 
+export function unsecuredCopyToClipboard(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {
+    console.error('Unable to copy to clipboard', err);
+  }
+  document.body.removeChild(textArea);
+}
+
 socket.on("clearCanvasClient", () => {
   const canvas = document.getElementById('drawing-board') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d');
@@ -769,14 +783,18 @@ socket.on("newGame", (data) => {
   document.getElementById("gamePlay").style.display = "block";
   let copyButton = document.getElementById("copyButton");
   copyButton.addEventListener("click", () => {
-    navigator.clipboard.writeText(roomUniqueID).then(
-      function () {
-        console.log("Async: copying to clipboard was successful");
-      },
-      function (err) {
-        console.error("Async: could not copy text: ", err);
-      },
-    );
+    try {
+      navigator.clipboard.writeText(roomUniqueID).then(
+        function () {
+          console.log("Async: copying to clipboard was successful");
+        },
+        function (err) {
+          console.error("Async: could not copy text: ", err);
+        },
+      );
+    } catch (err) {
+      unsecuredCopyToClipboard(roomUniqueID);
+    }
   });
   const code = document.getElementById("code");
   code.innerText = `${roomUniqueID}`;

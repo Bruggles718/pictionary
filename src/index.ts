@@ -94,6 +94,12 @@ io.on("connection", (socket) => {
     if (!room) return;
     console.log("removing player");
     room.removePlayer(playerDisconnect.m_id);
+    if (room.playerCount() <= 0) {
+      delete rooms[roomID];
+      console.log(`room ${roomID} was deleted`);
+      return;
+    }
+    console.log(`player (${playerDisconnect.m_name}, ${playerDisconnect.m_id}) left room ${room.m_id}`);
     const message = new Message(playerDisconnect.m_name + " disconnected!");
     message.setColor("txred");
     room.m_messages.push(message);
@@ -425,6 +431,7 @@ io.on("connection", (socket) => {
     };
     socket.to(data.roomUniqueID).emit("sendMessage", { room: messagesRoomToSend });
     socket.emit("sendMessage", { room: messagesRoomToSend });
+    console.log(`player (${data.playerName}, ${data.playerID}) created room ${room.m_id}`)
   });
 
   socket.on("joinGame", (data) => {
@@ -494,6 +501,7 @@ io.on("connection", (socket) => {
       };
       socket.to(data.roomUniqueID).emit("sendMessage", { room: messagesRoomToSend });
       socket.emit("sendMessage", { room: messagesRoomToSend });
+      console.log(`player (${data.playerName}, ${data.playerID}) joined room ${room.m_id}`)
     } else {
       console.log("room id null");
       socket.emit("invalidRoomID", { playerID: data.playerID });
