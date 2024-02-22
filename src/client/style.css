@@ -21,7 +21,7 @@
     margin-bottom: 0px;
 }
 
-.drawing-board {
+.drawing-board-container {
     width: 400px;
     height: 300px;
     border: 5px solid #000000;
@@ -29,7 +29,7 @@
     display: inline-block;
 }
 
-.drawing-board.line {
+.drawing-board-container.line {
   cursor: none;
 }
 
@@ -44,7 +44,7 @@
   z-index: 2;
 }
 
-.drawing-board.fill {
+.drawing-board-container.fill {
   cursor: url(/images/paintbucket.cur), auto;
 }
 
