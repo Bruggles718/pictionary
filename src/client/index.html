@@ -11,49 +11,57 @@
   </head>
   <body>
     <main>
-      <h1>Welcome to Pictionary</h1>
+      <h1 style="text-align: center;">Welcome to Pictionary</h1>
       <button id="changeTheme" style="position: absolute; top: 0px; right: 0px;"></button>
-      <div id="displayNameInitial">
-        <div>
-          <div>Enter Display Name</div>
-          <input type="text" id="displayNameEntry" />
-          <button id="displayNameButton">Enter</button>
+      <div class="flex-container center">
+        <div id="displayNameInitial">
+          <div>
+            <div>Enter Display Name</div>
+            <input type="text" id="displayNameEntry" />
+            <button id="displayNameButton">Enter</button>
+          </div>
         </div>
-      </div>
-      <div id="initial" style="display: none">
-        <div>
-          <div style="margin-bottom: 10px;">Display Name:</div>
-          <div id="displayName"></div>
+        <div id="initial" style="display: none">
+          <div>
+            <div>Display Name:</div>
+            <div id="displayName"></div>
+          </div>
+          <br />
+          <button id="createGameButton">Create Game</button>
+          <div>or</div>
+          <input type="text" id="roomUniqueID" />
+          <button id="joinGameButton">Join Game</button>
+          <div id="invalid-warning" style="display: none">Invalid room ID</div>
         </div>
-        <br />
-        <button id="createGameButton" style="margin-bottom: 10px;">Create Game</button>
-        <div style="margin-bottom: 10px;" >or</div>
-        <input type="text" id="roomUniqueID" />
-        <button id="joinGameButton" style="margin-bottom: 10px;">Join Game</button>
-        <div id="invalid-warning" style="display: none">Invalid room ID</div>
       </div>
       <div id="gamePlay" style="display: none">
-        <div id="gamePlay-container" class="flex-container">
+        <div id="gamePlay-container" class="flex-container center">
           <div id="waitingArea" style="display: none; margin-bottom: 25px;">
-            <div id="codeMessage">
+            <div id="codeMessage" style="margin-bottom: 25px;">
               <span>Waiting for players. Please share code</span>
               <span id="code" style='font-family: "menlo"; margin-left: 5px; margin-right: 5px;'></span>
               <span>to join.</span>
+              <div style="margin-bottom: 25px;">
+                <button id="copyButton" style="display: none">Copy Code</button>
+                <button id="startButton" style="display: none">Start Game</button>
+              </div>
             </div>
-            <button id="copyButton" style="display: block">Copy Code</button>
-            <button id="startButton" style="display: none">Start Game</button>
-            <div id="waiting-area-container" class="flex-container">
-              <div id="player-list-container" style="display: inline-block; padding: 10px">
-                <div id="playerListTitle" style="display: none">Players:</div>
-                <div id="playerList" style="display: none"></div>
+            <div id="game-chat-area">
+              <h2 style="margin-top: -25px">Chatbox:</h2>
+              <div id="chatbox"></div>
+              <div id="message-sending-area">
+                <input type="text" id="message" />
+                <button id="sendMessageButton">Send</button>
               </div>
             </div>
           </div>
           <div class="gameArea" id="gameArea" style="display: none;">
-            <div id="game-area-container" class="grid-container">
+            <div id="game-area-container" class="game-grid-container">
               <div id="score-area">
-                <h2 style="margin-top: -25px;">Scoreboard:</h2>
-                <div id="scoreboard"></div>
+                <div id="inner-score-area">
+                  <h2 style="margin-top: -25px;">Scoreboard:</h2>
+                  <div id="scoreboard"></div>
+                </div>
               </div>
               <div id="round-info-area">
                 <div id="round-container">
@@ -124,14 +132,6 @@
                   Play Again
                 </button>
               </div>
-            </div>
-          </div>
-          <div id="game-chat-area">
-            <h2 style="margin-top: -25px">Chatbox:</h2>
-            <div id="chatbox"></div>
-            <div id="message-sending-area">
-              <input type="text" id="message" />
-              <button id="sendMessageButton">Send</button>
             </div>
           </div>
         </div>

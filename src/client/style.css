@@ -8,7 +8,7 @@
     flex-wrap: wrap;
 }
 
-.grid-container {
+.game-grid-container {
     display: grid;
     align-items: center;
     grid-template-columns: auto, auto, auto;
@@ -17,6 +17,11 @@
 
 #time-remaining-container {
     width: 700px;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
 }
 
 #gameArea {
@@ -115,6 +120,7 @@
     width: 300px;
     height: 252px;
     overflow:auto;
+    text-overflow: break-word;
 }
 
 #scoreboard {
@@ -224,7 +230,7 @@ button.dark {
         text-overflow: break-word;
     }
 
-    .grid-container {
+    .game-grid-container {
         display: grid;
         align-items: center;
         grid-template-columns: auto;
@@ -262,5 +268,11 @@ button.dark {
         padding: 10px;
         grid-row: 5;
         grid-column: 1;
+    }
+
+    #chatbox {
+        width: 300px;
+        height: 126px;
+        overflow:auto;
     }
 }

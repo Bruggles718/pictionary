@@ -652,8 +652,8 @@ export function joinGame() {
     playerName: displayName,
   };
   socket.emit("joinGame", data);
-  const waitingArea = document.getElementById("waitingArea");
-  waitingArea.innerHTML = "Waiting to start: ";
+  const codeMessage = document.getElementById("codeMessage");
+  codeMessage.innerHTML = "Waiting to start: ";
 }
 
 export function startGame() {
@@ -782,6 +782,7 @@ socket.on("newGame", (data) => {
   document.getElementById("initial").style.display = "none";
   document.getElementById("gamePlay").style.display = "block";
   let copyButton = document.getElementById("copyButton");
+  copyButton.style.display = 'block';
   copyButton.addEventListener("click", () => {
     try {
       navigator.clipboard.writeText(roomUniqueID).then(
