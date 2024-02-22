@@ -839,7 +839,7 @@ socket.on("showGameArea", (data) => {
   document.getElementById("playAgain").style.display = "none";
   document.getElementById("end-word-overlay").innerHTML = "";
   document
-    .getElementById("middle-area")
+    .getElementById("game-area-container")
     .appendChild(document.getElementById("game-chat-area"));
   const chatbox = document.getElementById("chatbox");
   chatbox.scrollTop = chatbox.scrollHeight - chatbox.clientHeight;

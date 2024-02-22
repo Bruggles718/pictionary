@@ -33,144 +33,100 @@
         <div id="invalid-warning" style="display: none">Invalid room ID</div>
       </div>
       <div id="gamePlay" style="display: none">
-        <div id="gamePlay-container" style="display: flex; flex-wrap: wrap">
+        <div id="gamePlay-container" class="flex-container">
           <div id="waitingArea" style="display: none; margin-bottom: 25px;">
-            <div id="codeMessage" style="display: flex; flex-wrap: wrap">
-              <div>Waiting for players. Please share code</div>
-              <div id="code" style='font-family: "menlo"; margin-left: 5px; margin-right: 5px;'></div>
-              <div>to join.</div>
+            <div id="codeMessage">
+              <span>Waiting for players. Please share code</span>
+              <span id="code" style='font-family: "menlo"; margin-left: 5px; margin-right: 5px;'></span>
+              <span>to join.</span>
             </div>
             <button id="copyButton" style="display: block">Copy Code</button>
             <button id="startButton" style="display: none">Start Game</button>
-            <div
-              id="waiting-area-container"
-              style="display: flex; flex-wrap: wrap"
-            >
-              <div
-                id="player-list-container"
-                style="display: inline-block; padding: 10px"
-              >
+            <div id="waiting-area-container" class="flex-container">
+              <div id="player-list-container" style="display: inline-block; padding: 10px">
                 <div id="playerListTitle" style="display: none">Players:</div>
                 <div id="playerList" style="display: none"></div>
               </div>
             </div>
           </div>
-          <div class="gameArea" id="gameArea">
-            <div
-              class="game-area-container"
-              style="display: flex; flex-wrap: wrap"
-            >
-              <div id="score-area" style="display: inline-block; padding: 10px; width: 150px;">
-                <br />
-                <br />
-                <br />
-                <h2>Scoreboard:</h2>
+          <div class="gameArea" id="gameArea" style="display: none;">
+            <div id="game-area-container" class="grid-container">
+              <div id="score-area">
+                <h2 style="margin-top: -25px;">Scoreboard:</h2>
                 <div id="scoreboard"></div>
               </div>
-              <div id="lower-area" style="display: flex; flex-wrap: wrap">
+              <div id="round-info-area">
+                <div id="round-container">
+                  <span style="padding: 5px">Round:</span>
+                  <span style="padding: 5px" id="current-round"></span>
+                </div>
+                <div id="time-remaining-container" class="flex-container">
+                  <span style="padding: 5px">Time Remaining:</span>
+                  <span style="padding: 5px" id="time-remaining"></span>
+                  <button style="display: none" id="word1"></button>
+                  <button style="display: none" id="word2"></button>
+                  <button style="display: none" id="word3"></button>
+                </div>
+                <div id="current-word-container" class="flex-container" style="margin-top: -22px; margin-bottom: -20px;">
+                  <h3 style="display: inline-block; padding: 5px">
+                    Current word:
+                  </h3>
+                  <h3
+                    style="display: inline-block; padding: 5px"
+                    id="current-word"
+                  ></h3>
+                </div>
+              </div>
+              <div id="drawing-board-container" class="drawing-board">
+                <canvas
+                  id="drawing-board"
+                  style="display: inline-block"
+                ></canvas>
+                <div id="overlay">
+                  <div id="word-overlay"></div>
+                  <div id="end-word-overlay"></div>
+                </div>
+              </div>
+              <div id="drawing-and-tools">
                 <div
-                  id="drawing-area"
-                  style="display: inline-block; padding: 10px"
+                  id="toolbar"
+                  style="margin-bottom: 25px; margin-top: -15px"
                 >
-                  <div
-                    id="round-container"
-                    style="display: flex; flex-wrap: wrap"
-                  >
-                    <div style="display: inline-block; padding: 5px">
-                      Round:
-                    </div>
-                    <div
-                      style="display: inline-block; padding: 5px"
-                      id="current-round"
-                    ></div>
+                  <div>
+                    <label for="stroke">Stroke</label>
+                    <input id="stroke" name="stroke" type="color" />
+                    <label for="lineWidth">Line Width</label>
+                    <input
+                      class="lineWidthBox"
+                      id="lineWidth"
+                      name="lineWidth"
+                      type="number"
+                      value="5"
+                    />
+                    <button id="clear">Clear</button>
+                    <button id="undo">Undo</button>
+                    <button id="fill">Fill</button>
                   </div>
-                  <div
-                    id="time-remaining-container"
-                    style="display: flex; flex-wrap: wrap"
-                  >
-                    <div style="display: inline-block; padding: 5px">
-                      Time Remaining:
-                    </div>
-                    <div
-                      style="display: inline-block; padding: 5px"
-                      id="time-remaining"
-                    ></div>
-                    <button style="display: none" id="word1"></button>
-                    <button style="display: none" id="word2"></button>
-                    <button style="display: none" id="word3"></button>
-                  </div>
-                  <div
-                    id="current-word-container"
-                    style="
-                      display: flex;
-                      flex-wrap: wrap;
-                      margin-top: -22px;
-                      margin-bottom: -20px;
-                    "
-                  >
-                    <h3 style="display: inline-block; padding: 5px">
-                      Current word:
-                    </h3>
-                    <h3
-                      style="display: inline-block; padding: 5px"
-                      id="current-word"
-                    ></h3>
-                  </div>
-                  <div id="middle-area" style="display: flex; flex-wrap: wrap">
-                    <div id="drawing-and-tools">
-                      <div id="drawing-board-container" class="drawing-board" style="margin-bottom: 25px;">
-                        <canvas
-                          id="drawing-board"
-                          style="display: inline-block"
-                        ></canvas>
-                        <div id="overlay">
-                          <div id="word-overlay"></div>
-                          <div id="end-word-overlay"></div>
-                        </div>
-                      </div>
-                      <div
-                        id="toolbar"
-                        style="margin-bottom: 25px; margin-top: -15px"
-                      >
-                        <div>
-                          <label for="stroke">Stroke</label>
-                          <input id="stroke" name="stroke" type="color" />
-                          <label for="lineWidth">Line Width</label>
-                          <input
-                            class="lineWidthBox"
-                            id="lineWidth"
-                            name="lineWidth"
-                            type="number"
-                            value="5"
-                          />
-                          <button id="clear">Clear</button>
-                          <button id="undo">Undo</button>
-                          <button id="fill">Fill</button>
-                        </div>
-                        <div id="color-swatches" style="margin-top: 10px; height: 30px;">
-                          <div class="swatch" style="background-color: #ffffff;"></div>
-                          <div class="swatch" style="background-color: #000000;"></div>
-                          <div class="swatch" style="background-color: #8b4513;"></div>
-                          <div class="swatch" style="background-color: #ff0000;"></div>
-                          <div class="swatch" style="background-color: #ffa500;"></div>
-                          <div class="swatch" style="background-color: #ffff00;"></div>
-                          <div class="swatch" style="background-color: #008000;"></div>
-                          <div class="swatch" style="background-color: #4169e1;"></div>
-                          <div class="swatch" style="background-color: #663399;"></div>
-                          <div class="swatch" style="background-color: #ffc0cb;"></div>
-                        </div>
-                      </div>
-                      <button id="playAgain" style="display: none; margin-bottom: 25px;">
-                        Play Again
-                      </button>
-                    </div>
+                  <div id="color-swatches" style="margin-top: 10px; height: 30px;">
+                    <div class="swatch" style="background-color: #ffffff;"></div>
+                    <div class="swatch" style="background-color: #000000;"></div>
+                    <div class="swatch" style="background-color: #8b4513;"></div>
+                    <div class="swatch" style="background-color: #ff0000;"></div>
+                    <div class="swatch" style="background-color: #ffa500;"></div>
+                    <div class="swatch" style="background-color: #ffff00;"></div>
+                    <div class="swatch" style="background-color: #008000;"></div>
+                    <div class="swatch" style="background-color: #4169e1;"></div>
+                    <div class="swatch" style="background-color: #663399;"></div>
+                    <div class="swatch" style="background-color: #ffc0cb;"></div>
                   </div>
                 </div>
+                <button id="playAgain" style="display: none; margin-bottom: 25px;">
+                  Play Again
+                </button>
               </div>
             </div>
           </div>
-
-          <div id="game-chat-area" style="display: inline-block; padding: 10px">
+          <div id="game-chat-area">
             <h2 style="margin-top: -25px">Chatbox:</h2>
             <div id="chatbox"></div>
             <div id="message-sending-area">

@@ -5,4 +5,5 @@ cp ./src/client/index.html ./dist/client
 cp ./src/client/style.css ./dist/client
 cp -r ./src/client/images/. ./dist/client/images
 cp ./src/client/favicon.ico ./dist/client
+cp ./src/client/Menlo-Regular.ttf ./dist/client
 node ./dist/index.js
