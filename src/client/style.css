@@ -1,7 +1,12 @@
 @font-face {
     font-family: menlo;
     src: url(Menlo-Regular.ttf);
-  }
+}
+
+* {
+    transition: color 0.25s;
+    transition: background-color 0.25s;
+}
 
 #gameArea {
     max-width: 100vw;
