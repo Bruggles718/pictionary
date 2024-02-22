@@ -844,6 +844,7 @@ socket.on("showGameArea", (data) => {
     .appendChild(document.getElementById("game-chat-area"));
   const chatbox = document.getElementById("chatbox");
   chatbox.scrollTop = chatbox.scrollHeight - chatbox.clientHeight;
+  document.getElementById("welcome").style.textAlign = "left";
 });
 
 socket.on("setupMessages", (data) => {
