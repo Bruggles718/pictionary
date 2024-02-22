@@ -63,6 +63,10 @@ io.on("connection", (socket) => {
     const word1 = room.popRandomWord();
     const word2 = room.popRandomWord();
     const word3 = room.popRandomWord();
+    room.m_wordsToChoose = [];
+    room.m_wordsToChoose.push(word1);
+    room.m_wordsToChoose.push(word2);
+    room.m_wordsToChoose.push(word3);
     const updateArtistRoomToSend = {
       m_id: room.m_id,
       m_currentArtistID: room.m_currentArtistID,
@@ -257,7 +261,7 @@ io.on("connection", (socket) => {
     const roomID = data.roomID;
     const room = rooms[roomID];
     if (!room) return;
-    room.setNewWord(data.word);
+    room.setNewWord(room.m_wordsToChoose[data.word]);
     const timeRoomToSend = {
       m_id: room.m_id,
       m_drawTimeRemaining: room.m_drawTimeRemaining

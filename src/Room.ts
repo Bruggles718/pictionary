@@ -24,6 +24,7 @@ export class Room {
   public m_winnerID: string;
   public m_revealedLetters: Array<number>;
   public m_paths;
+  public m_wordsToChoose : Array<string>;
 
   public get ID() {
     return this.m_id;
@@ -43,6 +44,7 @@ export class Room {
     this.m_revealedLetters = [];
     this.m_potentialWords = [...wordsList2];
     this.m_paths = [[]];
+    this.m_wordsToChoose = [];
   }
 
   public containsPlayerName(i_name : string) : boolean {

@@ -64,7 +64,7 @@ export function word1StartDrawing() {
   word1Button.style.display = "none";
   document.getElementById("word2").style.display = "none";
   document.getElementById("word3").style.display = "none";
-  const dataToSend = { roomID: player.m_currentRoomId, word: word };
+  const dataToSend = { roomID: player.m_currentRoomId, word: 0 };
   socket.emit("startDrawingServer", dataToSend);
 }
 
@@ -75,7 +75,7 @@ export function word2StartDrawing() {
   word2Button.style.display = "none";
   document.getElementById("word1").style.display = "none";
   document.getElementById("word3").style.display = "none";
-  const dataToSend = { roomID: player.m_currentRoomId, word: word };
+  const dataToSend = { roomID: player.m_currentRoomId, word: 1 };
   socket.emit("startDrawingServer", dataToSend);
 }
 
@@ -86,7 +86,7 @@ export function word3StartDrawing() {
   word3Button.style.display = "none";
   document.getElementById("word1").style.display = "none";
   document.getElementById("word2").style.display = "none";
-  const dataToSend = { roomID: player.m_currentRoomId, word: word };
+  const dataToSend = { roomID: player.m_currentRoomId, word: 2 };
   socket.emit("startDrawingServer", dataToSend);
 }
 
