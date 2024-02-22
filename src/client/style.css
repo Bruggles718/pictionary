@@ -3,6 +3,10 @@
     src: url(Menlo-Regular.ttf);
 }
 
+.transition {
+    transition: color 0.25s, background-color 0.25s;
+}
+
 .flex-container {
     display: flex; 
     flex-wrap: wrap;

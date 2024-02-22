@@ -245,6 +245,32 @@ const setDrawingBoardTool = () => {
 
 let darkMode = 0;
 
+export function getAllThemedElements() {
+  const result = [];
+
+  const page = document.getElementById("page");
+  const messages = document.getElementsByClassName("message");
+  const textInputs = document.querySelectorAll("input[type=text]");
+  const numberInputs = document.querySelectorAll("input[type=number]");
+  const buttonInputs = document.querySelectorAll("button");
+
+  result.push(page);
+  for (let i = 0; i < messages.length; i++) {
+    result.push(messages[i]);
+  }
+  for (let i = 0; i < textInputs.length; i++) {
+    result.push(textInputs[i]);
+  }
+  for (let i = 0; i < buttonInputs.length; i++) {
+    result.push(buttonInputs[i]);
+  }
+  for (let i = 0; i < numberInputs.length; i++) {
+    result.push(numberInputs[i]);
+  }
+
+  return result;
+}
+
 export function setupTheme() {
   const storageDarkMode = localStorage.getItem("darkMode");
   if (typeof storageDarkMode !== "undefined") {
@@ -254,43 +280,21 @@ export function setupTheme() {
   }
   localStorage.setItem("darkMode", darkMode.toString());
   
-  const page = document.getElementById("page");
-  
   const changeThemeButton = document.getElementById("changeTheme") as HTMLButtonElement;
   const setChangeThemeButton = () => {
-    const messages = document.getElementsByClassName("message");
-    const textInputs = document.querySelectorAll("input[type=text]");
-    const numberInputs = document.querySelectorAll("input[type=number]");
-    const buttonInputs = document.querySelectorAll("button");
     if (darkMode) {
       changeThemeButton.innerHTML = "Light Mode";
-      page.classList.add("dark");
-      for (let i = 0; i < messages.length; i++) {
-        messages[i].classList.add("dark");
-      }
-      for (let i = 0; i < textInputs.length; i++) {
-        textInputs[i].classList.add("dark");
-      }
-      for (let i = 0; i < buttonInputs.length; i++) {
-        buttonInputs[i].classList.add("dark");
-      }
-      for (let i = 0; i < numberInputs.length; i++) {
-        numberInputs[i].classList.add("dark");
+      const allThemedElements = getAllThemedElements();
+      for (let i = 0; i < allThemedElements.length; i++) {
+        allThemedElements[i].classList.add("dark");
+        allThemedElements[i].classList.add("transition");
       }
     } else {
       changeThemeButton.innerHTML = "Dark Mode";
-      page.classList.remove("dark");
-      for (let i = 0; i < messages.length; i++) {
-        messages[i].classList.remove("dark");
-      }
-      for (let i = 0; i < textInputs.length; i++) {
-        textInputs[i].classList.remove("dark");
-      }
-      for (let i = 0; i < buttonInputs.length; i++) {
-        buttonInputs[i].classList.remove("dark");
-      }
-      for (let i = 0; i < numberInputs.length; i++) {
-        numberInputs[i].classList.remove("dark");
+      const allThemedElements = getAllThemedElements();
+      for (let i = 0; i < allThemedElements.length; i++) {
+        allThemedElements[i].classList.remove("dark");
+        allThemedElements[i].classList.add("transition");
       }
     }
   }
