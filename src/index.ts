@@ -93,6 +93,7 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
     const playerDisconnect = players[socket.id];
     if (!playerDisconnect) return;
+    delete players[socket.id];
     const roomID = playerDisconnect.m_currentRoomId;
     const room = rooms[roomID];
     if (!room) return;
