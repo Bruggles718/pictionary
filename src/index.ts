@@ -28,6 +28,16 @@ let players: { [index: string]: Player } = {};
 io.on("connection", (socket) => {
   console.log("user connected");
 
+  const sendMessage = (room) => {
+    const messagesRoomToSend = {
+      m_id: room.m_id,
+      m_messages: room.m_messages.slice(-24)
+    };
+    socket.to(room.ID).emit("sendMessage", { room: messagesRoomToSend });
+    socket.emit("sendMessage", { room: messagesRoomToSend });
+    room.m_messages.slice(-24);
+  }
+
   const endGame = (roomID) => {
     const room = rooms[roomID];
     if (!room) return;
@@ -41,12 +51,7 @@ io.on("connection", (socket) => {
       message2.setColor("txgreen");
       room.m_messages.push(message2);
     }
-    const messagesRoomToSend = {
-      m_id: room.m_id,
-      m_messages: room.m_messages.slice(-24)
-    };
-    socket.to(room.ID).emit("sendMessage", { room: messagesRoomToSend });
-    socket.emit("sendMessage", { room: messagesRoomToSend });
+    sendMessage(room);
     const gameOverRoomToSend = {
       m_id: room.m_id,
       m_winnerID: room.m_winnerID,
@@ -81,12 +86,7 @@ io.on("connection", (socket) => {
       message.setColor("txlightBlue");
       room.m_messages.push(message);
     }
-    const messagesRoomToSend = {
-      m_id: room.m_id,
-      m_messages: room.m_messages.slice(-24)
-    };
-    socket.to(room.ID).emit("sendMessage", { room: messagesRoomToSend });
-    socket.emit("sendMessage", { room: messagesRoomToSend });
+    sendMessage(room);
   };
 
   socket.on("disconnect", () => {
@@ -107,12 +107,7 @@ io.on("connection", (socket) => {
     const message = new Message(playerDisconnect.m_name + " disconnected!");
     message.setColor("txred");
     room.m_messages.push(message);
-    const messagesRoomToSend = {
-      m_id: room.m_id,
-      m_messages: room.m_messages.slice(-24)
-    };
-    socket.to(roomID).emit("sendMessage", { room: messagesRoomToSend });
-    socket.emit("sendMessage", { room: messagesRoomToSend });
+    sendMessage(room);
     const scoreboardRoomToSend = {
       m_id: room.m_id,
       m_players: room.m_players,
@@ -213,12 +208,7 @@ io.on("connection", (socket) => {
       const message = new Message("The word was '" + room.m_currentWord + "'");
       message.setColor("txgreen");
       room.m_messages.push(message);
-      const messagesRoomToSend = {
-        m_id: room.m_id,
-        m_messages: room.m_messages.slice(-24)
-      };
-      socket.to(roomID).emit("sendMessage", { room: messagesRoomToSend });
-      socket.emit("sendMessage", { room: messagesRoomToSend });
+      sendMessage(room);
       const noTimeRoomToSend = {
         m_id: room.m_id,
         m_currentWord: room.m_currentWord
@@ -405,12 +395,7 @@ io.on("connection", (socket) => {
       message.setBackgroundColor(backgroundColor);
       room.m_messages.push(message);
     }
-    const messagesRoomToSend = {
-      m_id: room.m_id,
-      m_messages: room.m_messages.slice(-24)
-    };
-    socket.to(roomID).emit("sendMessage", { room: messagesRoomToSend });
-    socket.emit("sendMessage", { room: messagesRoomToSend });
+    sendMessage(room);
   });
 
   socket.on("createGame", (data) => {
@@ -429,12 +414,7 @@ io.on("connection", (socket) => {
     const message = new Message(data.playerName + " joined!");
     message.setColor("txlightGreen");
     room.m_messages.push(message);
-    const messagesRoomToSend = {
-      m_id: room.m_id,
-      m_messages: room.m_messages.slice(-24)
-    };
-    socket.to(data.roomUniqueID).emit("sendMessage", { room: messagesRoomToSend });
-    socket.emit("sendMessage", { room: messagesRoomToSend });
+    sendMessage(room);
     console.log(`player (${data.playerName}, ${data.playerID}) created room ${room.m_id}`)
   });
 
@@ -499,12 +479,7 @@ io.on("connection", (socket) => {
       const message = new Message(data.playerName + " joined!");
       message.setColor("txlightGreen");
       room.m_messages.push(message);
-      const messagesRoomToSend = {
-        m_id: room.m_id,
-        m_messages: room.m_messages.slice(-24)
-      };
-      socket.to(data.roomUniqueID).emit("sendMessage", { room: messagesRoomToSend });
-      socket.emit("sendMessage", { room: messagesRoomToSend });
+      sendMessage(room);
       console.log(`player (${data.playerName}, ${data.playerID}) joined room ${room.m_id}`)
     } else {
       console.log("room id null");
