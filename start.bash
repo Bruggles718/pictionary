@@ -1,9 +1,6 @@
 npx tsc
 esbuild ./dist/client/client.js --bundle --outfile=./dist/client/client.js --allow-overwrite
 esbuild ./dist/index.js --platform=node --bundle --outfile=./dist/index.js --allow-overwrite
-cp ./src/client/index.html ./dist/client
-cp ./src/client/style.css ./dist/client
-cp -r ./src/client/images/. ./dist/client/images
-cp ./src/client/favicon.ico ./dist/client
-cp ./src/client/Menlo-Regular.ttf ./dist/client
+for dir in `find src -type d`; do mkdir -p "dist${dir#src}"; done
+for dir in `find src -type d`; do for file in `find "${dir}" -maxdepth 1 -type f ! -name "*.ts"`; do cp "$file" "./dist/${file#src/}"; done; done
 node ./dist/index.js
