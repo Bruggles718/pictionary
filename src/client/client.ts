@@ -1085,6 +1085,13 @@ socket.on("updateScoreboardClient", (data) => {
       data.room.m_scores[playerID];
     const elem = document.createElement("div");
     elem.innerText = scoreboardStr;
+    elem.classList.add("scoreName");
+    if (data.room.m_guessedTheWord[playerID]) {
+      elem.classList.add("txlightGreen");
+    }
+    if (data.room.m_currentArtistID === playerID) {
+      elem.classList.add("txlightBlue");
+    }
     scoreboard.appendChild(elem);
   }
 });

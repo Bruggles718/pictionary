@@ -133,6 +133,7 @@ export class Room {
 
   public stopDrawing() {
     this.m_currentlyDrawing = false;
+    this.resetGuessedTracker();
   }
 
   public decrementTimeRemaining() {

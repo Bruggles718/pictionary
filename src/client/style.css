@@ -225,6 +225,14 @@ button.dark {
     color: white;
 }
 
+.scoreName.txlightBlue {
+    color: #007bff;
+}
+
+.scoreName.txlightGreen {
+    color: #42f57e;
+}
+
 @media screen and (min-width: 915px) {
     #scoreboard {
         width: 150px;

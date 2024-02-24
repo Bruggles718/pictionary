@@ -28,6 +28,18 @@ let players: { [index: string]: Player } = {};
 io.on("connection", (socket) => {
   console.log("user connected");
 
+  const sendScoreboard = (room) => {
+    const scoreboardRoomToSend = {
+      m_id: room.m_id,
+      m_players: room.m_players,
+      m_scores: room.m_scores,
+      m_currentArtistID: room.m_currentArtistID,
+      m_guessedTheWord: room.m_guessedTheWord
+    };
+    socket.to(room.m_id).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+    socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+  }
+
   const sendMessage = (room) => {
     const messagesRoomToSend = {
       m_id: room.m_id,
@@ -87,6 +99,7 @@ io.on("connection", (socket) => {
       room.m_messages.push(message);
     }
     sendMessage(room);
+    sendScoreboard(room);
   };
 
   socket.on("disconnect", () => {
@@ -109,13 +122,7 @@ io.on("connection", (socket) => {
     message.setColor("txred");
     room.m_messages.push(message);
     sendMessage(room);
-    const scoreboardRoomToSend = {
-      m_id: room.m_id,
-      m_players: room.m_players,
-      m_scores: room.m_scores,
-    };
-    socket.to(roomID).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
-    socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+    sendScoreboard(room);
     const playersConnectedRoomToSend = {
       m_id: room.m_id,
       m_players: room.m_players,
@@ -150,13 +157,7 @@ io.on("connection", (socket) => {
     room.m_started = true;
     socket.to(roomID).emit("showGameArea", { roomID: roomID });
     socket.emit("showGameArea", { roomID: roomID });
-    const scoreboardRoomToSend = {
-      m_id: room.m_id,
-      m_players: room.m_players,
-      m_scores: room.m_scores,
-    };
-    socket.to(roomID).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
-    socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+    sendScoreboard(room);
     room.randomizeArtistQueue();
     room.updateCurrentArtist();
     room.setNewRandomWord();
@@ -235,13 +236,7 @@ io.on("connection", (socket) => {
     room.m_started = true;
     socket.to(roomID).emit("showGameArea", { roomID: roomID });
     socket.emit("showGameArea", { roomID: roomID });
-    const scoreboardRoomToSend = {
-      m_id: room.m_id,
-      m_players: room.m_players,
-      m_scores: room.m_scores,
-    };
-    socket.to(roomID).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
-    socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+    sendScoreboard(room);
     room.randomizeArtistQueue();
     room.updateCurrentArtist();
     room.setNewRandomWord();
@@ -360,13 +355,7 @@ io.on("connection", (socket) => {
         room.m_currentArtistID,
         Math.max(400 * (room.m_drawTimeRemaining / defaultStartTime), 0),
       );
-      const scoreboardRoomToSend = {
-        m_id: room.m_id,
-        m_players: room.m_players,
-        m_scores: room.m_scores,
-      };
-      socket.to(roomID).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
-      socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+      sendScoreboard(room);
       if (numOfPeopleGuessed === 1 && room.m_drawTimeRemaining > 30) {
         room.setTimeRemaining(guessDropTime);
       }
@@ -447,13 +436,7 @@ io.on("connection", (socket) => {
       socket.emit("setupMessages", { playerID: data.playerID });
       if (room.m_started) {
         socket.emit("showGameArea", {roomID: data.roomUniqueID});
-        const scoreboardRoomToSend = {
-          m_id: room.m_id,
-          m_players: room.m_players,
-          m_scores: room.m_scores,
-        };
-        socket.to(data.roomUniqueID).emit("updateScoreboardClient", { room: scoreboardRoomToSend });
-        socket.emit("updateScoreboardClient", { room: scoreboardRoomToSend });
+        sendScoreboard(room);
         const timeRoomToSend = {
           m_id: room.m_id,
           m_drawTimeRemaining: room.m_drawTimeRemaining
