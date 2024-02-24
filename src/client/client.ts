@@ -849,6 +849,8 @@ socket.on("showGameArea", (data) => {
   const chatbox = document.getElementById("chatbox");
   chatbox.scrollTop = chatbox.scrollHeight - chatbox.clientHeight;
   document.getElementById("welcome").style.textAlign = "left";
+  document.getElementById("startedRoomIDHeader").style.display = "block";
+  document.getElementById("startedRoomID").innerText = player.m_currentRoomId;
 });
 
 socket.on("setupMessages", (data) => {
