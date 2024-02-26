@@ -812,8 +812,9 @@ socket.on("newGame", (data) => {
   let copyButton = document.getElementById("copyButton");
   copyButton.style.display = 'block';
   copyButton.addEventListener("click", () => {
+    const copyText = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/join=" + roomUniqueID;
     try {
-      navigator.clipboard.writeText(roomUniqueID).then(
+      navigator.clipboard.writeText(copyText).then(
         function () {
           console.log("Async: copying to clipboard was successful");
         },
@@ -822,7 +823,7 @@ socket.on("newGame", (data) => {
         },
       );
     } catch (err) {
-      unsecuredCopyToClipboard(roomUniqueID);
+      unsecuredCopyToClipboard(copyText);
     }
   });
   const code = document.getElementById("code");
