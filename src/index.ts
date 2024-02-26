@@ -19,7 +19,11 @@ app.get("/healthcheck", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile("./client/index.html");
+  res.sendFile("index.html");
+});
+
+app.get("/join=:room", (req, res) => {
+  res.sendFile(__dirname + "/client/index.html")
 });
 
 let rooms: { [index: string]: Room } = {};

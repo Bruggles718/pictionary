@@ -336,6 +336,20 @@ let canvasUrls = [];
 let lastX = 0;
 let lastY = 0;
 
+let autoJoinFunc = () => {}
+
+let autoJoin = false;
+
+socket.on("connect", () => {
+  // get path from current URL
+  if (!window.location.pathname.startsWith("/join=")) return;
+  let room = window.location.pathname.slice(6);   // remove leading /join/
+  autoJoinFunc = () => {
+    joinGameWithCode(room);
+  }
+  autoJoin = true;
+});
+
 window.onload = function () {
   // code goes here
   
@@ -380,13 +394,19 @@ window.onload = function () {
   const displayNameButton = document.getElementById(
     "displayNameButton",
   ) as HTMLButtonElement;
-  displayNameButton.onclick = setDisplayName;
+  
+  let displayNameFunc = () => {
+    setDisplayName();
+    autoJoinFunc();
+  };
+
+  displayNameButton.onclick = displayNameFunc;
   const displayNameEntry = document.getElementById(
     "displayNameEntry",
   ) as HTMLInputElement;
   displayNameEntry.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      setDisplayName();
+      displayNameFunc();
     }
   });
 
@@ -641,10 +661,7 @@ window.onload = function () {
   }
 };
 
-export function joinGame() {
-  const roomUniqueID = (
-    document.getElementById("roomUniqueID") as HTMLInputElement
-  ).value;
+export function joinGameWithCode(roomUniqueID: string) {
   const playerID: string = makeid(6);
   const displayNameDisplay = document.getElementById("displayName");
   const displayName = displayNameDisplay.innerText;
@@ -658,6 +675,13 @@ export function joinGame() {
   socket.emit("joinGame", data);
   const codeMessage = document.getElementById("codeMessage");
   codeMessage.innerHTML = "Waiting to start: ";
+}
+
+export function joinGame() {
+  const roomUniqueID = (
+    document.getElementById("roomUniqueID") as HTMLInputElement
+  ).value;
+  joinGameWithCode(roomUniqueID);
 }
 
 export function startGame() {
