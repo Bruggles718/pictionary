@@ -167,6 +167,7 @@ io.on("connection", (socket) => {
   const countDownTimer = (roomID: string) => {
     const room = rooms[roomID];
     if (!room) return;
+    room.decrementTimeRemaining();
     const timeRoomToSend = {
       m_id: room.m_id,
       m_drawTimeRemaining: room.m_drawTimeRemaining
@@ -204,7 +205,6 @@ io.on("connection", (socket) => {
         socket.to(roomID).emit("updateWordDisplay", { room: wordDisplayRoomToSend });
         socket.emit("updateWordDisplay", { room: wordDisplayRoomToSend });
       }
-      room.decrementTimeRemaining();
       setTimeout(countDownTimer, 1000, roomID);
     } else {
       const message = new Message("The word was '" + room.m_currentWord + "'");
@@ -248,12 +248,6 @@ io.on("connection", (socket) => {
     const room = rooms[roomID];
     if (!room) return;
     room.setNewWord(room.m_wordsToChoose[data.word]);
-    const timeRoomToSend = {
-      m_id: room.m_id,
-      m_drawTimeRemaining: room.m_drawTimeRemaining
-    }
-    socket.to(roomID).emit("updateTimeClient", { room: timeRoomToSend });
-    socket.emit("updateTimeClient", { room: timeRoomToSend });
     const currentWordRoomToSend = {
       m_id: room.m_id,
       m_currentWord: room.m_currentWord,
@@ -262,7 +256,13 @@ io.on("connection", (socket) => {
     socket.to(roomID).emit("updateCurrentWord", { room: currentWordRoomToSend });
     socket.emit("updateCurrentWord", { room: currentWordRoomToSend });
     room.startDrawingPhase();
-    countDownTimer(roomID);
+    const timeRoomToSend = {
+      m_id: room.m_id,
+      m_drawTimeRemaining: room.m_drawTimeRemaining
+    }
+    socket.to(roomID).emit("updateTimeClient", { room: timeRoomToSend });
+    socket.emit("updateTimeClient", { room: timeRoomToSend });
+    setTimeout(() => countDownTimer(roomID), 1000);
   });
 
   socket.on("undoCanvasServer", (data) => {
