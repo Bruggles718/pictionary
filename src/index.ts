@@ -449,6 +449,13 @@ io.on("connection", (socket) => {
           m_drawTimeRemaining: room.m_drawTimeRemaining
         }
         socket.emit("updateTimeClient", { room: timeRoomToSend });
+        const updateArtistRoomToSend = {
+          m_id: room.m_id,
+          m_currentArtistID: room.m_currentArtistID,
+          m_roundsRemaining: room.m_roundsRemaining
+        };
+        const dataToSend = { room: updateArtistRoomToSend, word1: "", word2: "", word3: "" };
+        socket.emit("updateArtistClient", dataToSend);
         const wordDisplayRoomToSend = {
           m_id: room.m_id,
           m_currentArtistID: room.m_currentArtistID,
@@ -457,13 +464,6 @@ io.on("connection", (socket) => {
           m_revealedLetters: room.m_revealedLetters
         }
         socket.emit("updateWordDisplay", { room: wordDisplayRoomToSend });
-        const updateArtistRoomToSend = {
-          m_id: room.m_id,
-          m_currentArtistID: room.m_currentArtistID,
-          m_roundsRemaining: room.m_roundsRemaining
-        };
-        const dataToSend = { room: updateArtistRoomToSend, word1: "", word2: "", word3: "" };
-        socket.emit("updateArtistClient", dataToSend);
         socket.to(room.m_id).emit("drawPaths", {paths: room.m_paths, playerID: data.playerID});
         socket.emit("drawPaths", {paths: room.m_paths, playerID: data.playerID});
       }
