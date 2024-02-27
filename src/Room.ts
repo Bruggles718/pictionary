@@ -6,6 +6,17 @@ export function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
+export class CachedPlayerData {
+  public m_score: number;
+  public m_guessedTheWord: boolean;
+  public m_timeout: NodeJS.Timeout;
+  constructor(i_score: number, i_guessedTheWord: boolean, i_timeout: NodeJS.Timeout) {
+    this.m_score = i_score;
+    this.m_guessedTheWord = i_guessedTheWord;
+    this.m_timeout = i_timeout;
+  }
+}
+
 export class Room {
   public m_id: string;
   public m_started: boolean;
@@ -25,6 +36,7 @@ export class Room {
   public m_revealedLetters: Array<number>;
   public m_paths;
   public m_wordsToChoose : Array<string>;
+  public m_cachedPlayerData: { [index: string]: CachedPlayerData};
 
   public get ID() {
     return this.m_id;
@@ -45,6 +57,7 @@ export class Room {
     this.m_potentialWords = [...wordsList2];
     this.m_paths = [[]];
     this.m_wordsToChoose = [];
+    this.m_cachedPlayerData = {};
   }
 
   public containsPlayerName(i_name : string) : boolean {
@@ -148,6 +161,9 @@ export class Room {
     for (let playerID in this.m_players) {
       this.m_guessedTheWord[playerID] = false;
     }
+    for (let playerID in this.m_cachedPlayerData) {
+      this.m_cachedPlayerData[playerID].m_guessedTheWord = false;
+    }
   }
 
   public startDrawingPhase() {
@@ -215,5 +231,34 @@ export class Room {
     }
     const randIndex = getRandomInt(lettersToChooseFrom.length);
     this.m_revealedLetters.push(lettersToChooseFrom[randIndex]);
+  }
+
+  public cachePlayer(i_id: string) {
+    console.log("caching player");
+    this.m_cachedPlayerData[i_id] = new CachedPlayerData(
+      this.m_scores[i_id],
+      this.m_guessedTheWord[i_id],
+      setTimeout(() => {
+        console.log(`clearing cached player ${i_id}`);
+        delete this.m_cachedPlayerData[i_id];
+      }, 30000)
+    )
+  }
+
+  public loadCachedData(i_id: string) {
+    if (this.m_cachedPlayerData[i_id]) {
+      console.log(`loading cached data for ${i_id}`);
+      const playerData = this.m_cachedPlayerData[i_id];
+      this.m_scores[i_id] = playerData.m_score;
+      this.m_guessedTheWord[i_id] = playerData.m_guessedTheWord;
+      clearTimeout(playerData.m_timeout);
+    }
+  }
+
+  public clearCachedTimouts() {
+    for (let playerID in this.m_cachedPlayerData) {
+      const playerData = this.m_cachedPlayerData[playerID];
+      clearTimeout(playerData.m_timeout);
+    }
   }
 }

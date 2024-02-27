@@ -114,9 +114,11 @@ io.on("connection", (socket) => {
     const roomID = playerDisconnect.m_currentRoomId;
     const room = rooms[roomID];
     if (!room) return;
+    room.cachePlayer(playerDisconnect.m_id);
     console.log("removing player");
     room.removePlayer(playerDisconnect.m_id);
     if (room.playerCount() <= 0) {
+      room.clearCachedTimouts();
       delete rooms[roomID];
       console.log(`room ${roomID} was deleted`);
       return;
@@ -438,6 +440,7 @@ io.on("connection", (socket) => {
         .to(data.roomUniqueID)
         .emit("setupMessages", { playerID: data.playerID });
       socket.emit("setupMessages", { playerID: data.playerID });
+      room.loadCachedData(data.playerID);
       if (room.m_started) {
         socket.emit("showGameArea", {roomID: data.roomUniqueID});
         sendScoreboard(room);

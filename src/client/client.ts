@@ -341,6 +341,11 @@ let autoJoinFunc = () => {}
 let autoJoin = false;
 
 socket.on("connect", () => {
+  if (player != null && player.m_currentRoomId != null) {
+    joinGameWithCode(player.m_currentRoomId);
+    return;
+  }
+
   // get path from current URL
   if (!window.location.pathname.startsWith("/join=")) return;
   let room = window.location.pathname.slice(6);   // remove leading /join/
@@ -662,7 +667,11 @@ window.onload = function () {
 };
 
 export function joinGameWithCode(roomUniqueID: string) {
-  const playerID: string = makeid(6);
+  let idToSet = makeid(6);
+  if (player != null && player.m_id != null) {
+    idToSet = player.m_id;
+  }
+  const playerID: string = idToSet;
   const displayNameDisplay = document.getElementById("displayName");
   const displayName = displayNameDisplay.innerText;
   if (displayName === "") return;
