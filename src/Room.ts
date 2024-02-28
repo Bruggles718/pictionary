@@ -75,6 +75,10 @@ export class Room {
       this.m_scores[id] = 0;
       this.m_guessedTheWord[id] = false;
     }
+    for (let id in this.m_cachedPlayerData) {
+      this.m_cachedPlayerData[id].m_score = 0;
+      this.m_cachedPlayerData[id].m_guessedTheWord = false;
+    }
     this.randomizeArtistQueue();
     this.m_drawTimeRemaining = 80;
     this.m_artistQueueIndex = 0;
