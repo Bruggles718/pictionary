@@ -360,6 +360,15 @@ window.onload = function () {
   
   setupTheme();
 
+  const textInputs = document.querySelectorAll("input[type=text]");
+  for (let i = 0; i < textInputs.length; i++) {
+    textInputs[i].addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      (textInputs[i] as HTMLInputElement).focus({preventScroll: true});
+    });
+  }
+
   let swatches = document.getElementsByClassName('swatch');
   for (let i = 0; i < swatches.length; i++) {
     swatches[i].addEventListener('click', setSwatch);
