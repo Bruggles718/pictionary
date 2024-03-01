@@ -691,8 +691,6 @@ export function joinGameWithCode(roomUniqueID: string) {
     playerName: displayName,
   };
   socket.emit("joinGame", data);
-  const codeMessage = document.getElementById("codeMessage");
-  codeMessage.innerHTML = "Waiting to start: ";
 }
 
 export function joinGame() {
@@ -869,6 +867,11 @@ socket.on("playersConnected", (data) => {
   }
 
   if (data.room.m_started) return;
+
+  if (!gameStarter) {
+    const codeMessage = document.getElementById("codeMessage");
+    codeMessage.innerHTML = "Waiting to start: ";
+  }
 
   if (numOfPlayers > 1 && gameStarter) {
     const startButton = document.getElementById("startButton");
