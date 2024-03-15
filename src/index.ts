@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
     };
     socket.to(room.ID).emit("sendMessage", { room: messagesRoomToSend });
     socket.emit("sendMessage", { room: messagesRoomToSend });
-    room.m_messages.slice(-24);
+    room.m_messages = room.m_messages.slice(-24);
   }
 
   const endGame = (roomID) => {
