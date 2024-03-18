@@ -316,8 +316,6 @@ io.on("connection", (socket) => {
   const messageHasWord = (i_message: string, i_word: string) => {
     const message = i_message.toLowerCase().replace(/./g, "").replace(/'/g, "");
     const word = i_word.toLowerCase().replace(/./g, "").replace(/'/g, "");
-    console.log(message);
-    console.log(word);
     return message.includes(word);
   }
 
