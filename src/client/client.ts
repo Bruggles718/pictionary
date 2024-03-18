@@ -1068,6 +1068,10 @@ socket.on("updateArtistClient", (data) => {
   }
 });
 
+function isLetter(str) {
+  return str.length === 1 && str.match(/[a-z]/i);
+}
+
 socket.on("updateCurrentWord", (data) => {
   if (data.room.m_id !== player.m_currentRoomId) return;
   const artistID = data.room.m_currentArtistID;
@@ -1081,8 +1085,10 @@ socket.on("updateCurrentWord", (data) => {
     for (let i = 0; i < data.room.m_currentWord.length; i++) {
       if (data.room.m_currentWord.charAt(i) === " ") {
         currentWordBlank += "&nbsp;&nbsp;&nbsp;&nbsp;";
-      } else {
+      } else if (isLetter(data.room.m_currentWord.charAt(i))) {
         currentWordBlank += "_ ";
+      } else {
+        currentWordBlank += `${data.room.m_currentWord.charAt(i)} `;
       }
     }
     document.getElementById("current-word").innerHTML = currentWordBlank;
@@ -1099,8 +1105,10 @@ socket.on("updateWordDisplay", (data) => {
         currentWordBlank += "&nbsp;&nbsp;&nbsp;&nbsp;";
       } else if (data.room.m_revealedLetters.indexOf(i) > -1) {
         currentWordBlank += `${data.room.m_currentWord.charAt(i)} `;
-      } else {
+      } else if (isLetter(data.room.m_currentWord.charAt(i))) {
         currentWordBlank += "_ ";
+      } else {
+        currentWordBlank += `${data.room.m_currentWord.charAt(i)} `;
       }
     }
     document.getElementById("current-word").innerHTML = currentWordBlank;

@@ -85,7 +85,8 @@ export class Room {
     this.m_roundsRemaining = 3;
     this.m_revealedLetters = [];
     this.m_winnerID = "";
-    this.m_potentialWords = [...wordsList2];
+    //this.m_potentialWords = [...wordsList2];
+    this.m_potentialWords = ["bradley's", "mr. mime", "mr. ed", "farfetch'd"];
   }
 
   /**

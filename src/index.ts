@@ -313,6 +313,12 @@ io.on("connection", (socket) => {
     socket.to(roomID).emit("clearCanvasClient");
   });
 
+  const messageHasWord = (i_message: string, i_word: string) => {
+    const message = i_message.toLowerCase().replace("./g", "").replace("'/g", "");
+    const word = i_word.toLowerCase().replace("./g", "").replace("'/g", "");
+    return message.includes(word);
+  }
+
   socket.on("updateMessages", (data) => {
     const defaultStartTime = 80;
     const guessDropTime = 30;
@@ -327,7 +333,7 @@ io.on("connection", (socket) => {
     let backgroundColor = "bgplainv1";
     if (
       room.m_started &&
-      data.message.toLowerCase().includes(room.m_currentWord) &&
+      messageHasWord(data.message.toLowerCase(), room.m_currentWord) &&
       !room.m_guessedTheWord[data.player.m_id] &&
       room.m_currentArtistID !== data.player.m_id &&
       room.m_drawTimeRemaining > 0
