@@ -237,14 +237,25 @@ io.on("connection", (socket) => {
     }
   };
 
-  const startGame = (data, i_wordBank: Array<string>) => {
+  const startGame = (data, i_wordBank: Array<string>, i_allowSpellingPrediction: boolean) => {
     const roomID = data.roomID;
     const room = rooms[roomID];
     if (!room) return;
     room.initWordBank(i_wordBank);
+    room.m_allowSpellingPrediction = i_allowSpellingPrediction;
     room.m_started = true;
-    socket.to(roomID).emit("showGameArea", { roomID: roomID });
-    socket.emit("showGameArea", { roomID: roomID });
+    let showGameAreaData: {[index: string]: any} = { 
+      roomID: roomID, 
+      allowSpellingPrediction: i_allowSpellingPrediction
+    };
+    if (i_allowSpellingPrediction) {
+      showGameAreaData = {
+        ...showGameAreaData,
+        wordBank: i_wordBank
+      }
+    }
+    socket.to(roomID).emit("showGameArea", showGameAreaData);
+    socket.emit("showGameArea", showGameAreaData);
     sendScoreboard(room);
     room.randomizeArtistQueue();
     room.updateCurrentArtist();
@@ -253,7 +264,7 @@ io.on("connection", (socket) => {
   }
 
   socket.on("startGame", (data) => {
-    startGame(data, [...wordsList2]);
+    startGame(data, [...wordsList2], false);
   });
 
   socket.on("startGamePokemon", (data) => {
@@ -268,7 +279,7 @@ io.on("connection", (socket) => {
     const startData = {
       roomID: data.roomID
     }
-    startGame(startData, wordBank);
+    startGame(startData, wordBank, data.allowSpellingPrediction);
   });
 
   socket.on("startGameCustom", (data) => {
@@ -340,8 +351,8 @@ io.on("connection", (socket) => {
   });
 
   const messageHasWord = (i_message: string, i_word: string) => {
-    const message = i_message.toLowerCase().replace(/./g, "").replace(/'/g, "");
-    const word = i_word.toLowerCase().replace(/./g, "").replace(/'/g, "");
+    const message = i_message.toLowerCase().split(".").join("").split("'").join("");
+    const word = i_word.toLowerCase().split(".").join("").split("'").join("");
     return message.includes(word);
   }
 
@@ -474,7 +485,7 @@ io.on("connection", (socket) => {
       socket.emit("setupMessages", { playerID: data.playerID });
       room.loadCachedData(data.playerID);
       if (room.m_started) {
-        socket.emit("showGameArea", {roomID: data.roomUniqueID});
+        socket.emit("showGameArea", {roomID: data.roomUniqueID, allowSpellingPrediction: room.m_allowSpellingPrediction});
         sendScoreboard(room);
         const timeRoomToSend = {
           m_id: room.m_id,

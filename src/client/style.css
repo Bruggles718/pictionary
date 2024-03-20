@@ -124,7 +124,7 @@
     -ms-transform: translate(-50%,-50%);
 }
 
-#chatbox {
+#chatbox, #spellingPredictionBox {
     width: 300px;
     height: 126px;
     overflow-y:auto;
@@ -168,6 +168,7 @@
     padding: 10px;
     grid-row: 5;
     grid-column: 1;
+    height: 315px;
 }
 
 .dark {
@@ -286,7 +287,7 @@ button.dark {
         grid-column: 3;
     }
 
-    #chatbox {
+    #chatbox, #spellingPredictionBox {
         width: 300px;
         height: 252px;
         overflow-y:auto;

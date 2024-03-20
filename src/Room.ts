@@ -38,6 +38,7 @@ export class Room {
   public m_wordsToChoose : Array<string>;
   public m_cachedPlayerData: { [index: string]: CachedPlayerData};
   public m_wordBank: Array<string>;
+  public m_allowSpellingPrediction: boolean;
 
   public get ID() {
     return this.m_id;
@@ -60,6 +61,7 @@ export class Room {
     this.m_wordsToChoose = [];
     this.m_cachedPlayerData = {};
     this.m_wordBank = [];
+    this.m_allowSpellingPrediction = false;
   }
 
   public initWordBank(i_wordBank: Array<string>) {

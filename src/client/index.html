@@ -52,8 +52,13 @@
                 <h2 style="margin-top: -25px">Chatbox:</h2>
                 <div id="chatbox"></div>
                 <div id="message-sending-area">
-                  <input type="text" maxlength="200"; id="message" />
+                  <input type="text" maxlength="200" id="message" />
                   <button id="sendMessageButton">Send</button>
+                </div>
+                <div id="spelling-prediction-area" style="display: none;">
+                  <div id="spellingPredictionBox" style="outline-style: solid; outline-width: 1px; outline-color: #000000;">
+
+                  </div>
                 </div>
               </div>
               <div id="settingsArea" style="width: 250px; height: 300px; display: none;">
@@ -74,12 +79,18 @@
                   <div id="pokemonDescription">
                     This mode only has the names of Pokemon for words.
                   </div>
+                  <br/>
                   <div>
-                    <br/>
                     <div>Included Generations:</div>
                     <div id="genCheckboxes">
                       
                     </div>
+                  </div>
+                  <br/>
+                  <div>
+                    <div>Spelling prediction can help players who are less familiar with pokemon. Allowing this will give players a box displaying the names of all pokemon that start with what they have typed out in the chat message box: </div>
+                    <input type="checkbox" id="allowSpellingPredictionCheckbox" checked="true"/>
+                    <label for="allowSpellingPredictionCheckbox">Allow spelling prediction</label>
                   </div>
                 </div>
                 <div id="customSettings" style="display: none;">

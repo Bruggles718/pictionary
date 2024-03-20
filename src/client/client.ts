@@ -728,9 +728,12 @@ export function startGamePokemon() {
       includedGens.push(i);
     }
   }
+  const allowSpellingPredictionCheckbox = document.getElementById("allowSpellingPredictionCheckbox") as HTMLInputElement;
+  const allowSpellingPrediction = allowSpellingPredictionCheckbox.checked;
   socket.emit("startGamePokemon", {
     roomID: player.m_currentRoomId,
-    includedGens: includedGens
+    includedGens: includedGens,
+    allowSpellingPrediction: allowSpellingPrediction
   });
 }
 
@@ -957,6 +960,26 @@ socket.on("showGameArea", (data) => {
   document.getElementById("welcome").style.textAlign = "left";
   document.getElementById("startedRoomIDHeader").style.display = "block";
   document.getElementById("startedRoomID").innerText = player.m_currentRoomId;
+
+  if (data.allowSpellingPrediction) {
+    const wordBank = data.wordBank;
+    document.getElementById("spelling-prediction-area").style.display = "block";
+    const predictionBox = document.getElementById("spellingPredictionBox");
+    predictionBox.innerHTML = "";
+    const messageBox = document.getElementById("message") as HTMLInputElement;
+    messageBox.addEventListener("input", (e) => {
+      const target = e.target as HTMLInputElement;
+      const value = target.value.trim().toLowerCase();
+      predictionBox.innerHTML = "";
+      for (let i = 0; i < wordBank.length; i++) {
+        if (value.length > 0 && wordBank[i].toLowerCase().startsWith(value)) {
+          const div = document.createElement("div");
+          div.innerText = wordBank[i];
+          predictionBox.appendChild(div);
+        }
+      }
+    });
+  }
 });
 
 socket.on("setupMessages", (data) => {
@@ -964,8 +987,10 @@ socket.on("setupMessages", (data) => {
   const messageField: HTMLInputElement = document.getElementById(
     "message",
   ) as HTMLInputElement;
+  const predictionBox = document.getElementById("spellingPredictionBox");
   messageField.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
+      predictionBox.innerHTML = "";
       updateMessages();
     }
   });
