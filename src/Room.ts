@@ -37,6 +37,7 @@ export class Room {
   public m_paths;
   public m_wordsToChoose : Array<string>;
   public m_cachedPlayerData: { [index: string]: CachedPlayerData};
+  public m_wordBank: Array<string>;
 
   public get ID() {
     return this.m_id;
@@ -54,10 +55,16 @@ export class Room {
     this.m_artistQueueIndex = 0;
     this.m_roundsRemaining = 3;
     this.m_revealedLetters = [];
-    this.m_potentialWords = [...wordsList2];
+    this.m_potentialWords = [];
     this.m_paths = [[]];
     this.m_wordsToChoose = [];
     this.m_cachedPlayerData = {};
+    this.m_wordBank = [];
+  }
+
+  public initWordBank(i_wordBank: Array<string>) {
+    this.m_wordBank = i_wordBank;
+    this.m_potentialWords = [...i_wordBank];
   }
 
   public containsPlayerName(i_name : string) : boolean {
@@ -85,7 +92,7 @@ export class Room {
     this.m_roundsRemaining = 3;
     this.m_revealedLetters = [];
     this.m_winnerID = "";
-    this.m_potentialWords = [...wordsList2];
+    this.m_potentialWords = [...this.m_wordBank];
   }
 
   /**
@@ -134,7 +141,9 @@ export class Room {
   }
 
   public popRandomWord(): string {
-    if (this.m_potentialWords.length <= 0) return "";
+    if (this.m_potentialWords.length <= 0) {
+      this.m_potentialWords = [...this.m_wordBank];
+    }
     const randIndex = getRandomInt(this.m_potentialWords.length);
     const result = this.m_potentialWords[randIndex];
     this.m_potentialWords.splice(randIndex, 1);

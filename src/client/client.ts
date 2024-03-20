@@ -1,6 +1,7 @@
 import { Message } from "../Message";
 import { Player } from "../Player";
 import io from "socket.io-client";
+import { pokemonWords } from "../PokemonWords";
 
 function makeid(length) {
   let result = "";
@@ -253,6 +254,7 @@ export function getAllThemedElements() {
   const textInputs = document.querySelectorAll("input[type=text]");
   const numberInputs = document.querySelectorAll("input[type=number]");
   const buttonInputs = document.querySelectorAll("button");
+  const selectors = document.querySelectorAll("select");
 
   result.push(page);
   for (let i = 0; i < messages.length; i++) {
@@ -266,6 +268,9 @@ export function getAllThemedElements() {
   }
   for (let i = 0; i < numberInputs.length; i++) {
     result.push(numberInputs[i]);
+  }
+  for (let i = 0; i < selectors.length; i++) {
+    result.push(selectors[i]);
   }
 
   return result;
@@ -701,8 +706,31 @@ export function joinGame() {
 }
 
 export function startGame() {
-  socket.emit("startGame", {
+  const mode = (document.getElementById("modeSelector") as HTMLSelectElement).value;
+  if (mode === "pokemonSettings") {
+    startGamePokemon();
+  } else if (mode === "customSettings") {
+
+  } else {
+    socket.emit("startGame", {
+      roomID: player.m_currentRoomId,
+    });
+  }
+}
+
+export function startGamePokemon() {
+  const genCheckboxes = document.getElementById("genCheckboxes");
+  const includedGens = [];
+  for (let i = 0; i < genCheckboxes.children.length; i++) {
+    const div = genCheckboxes.children[i];
+    const checkbox = div.children[0] as HTMLInputElement;
+    if (checkbox.checked) {
+      includedGens.push(i);
+    }
+  }
+  socket.emit("startGamePokemon", {
     roomID: player.m_currentRoomId,
+    includedGens: includedGens
   });
 }
 
@@ -819,6 +847,17 @@ socket.on("invalidName", (data) => {
   invalidWarning.innerHTML = "Invalid name: someone in the room already has that display name";
 });
 
+export function onModeSelection(e) {
+  const mode = e.target.value;
+  for (let div of e.target.children) {
+    let displayStyle = "none";
+    if (div.value === mode) {
+      displayStyle = "block";
+    }
+    document.getElementById(div.value).style.display = displayStyle;
+  }
+}
+
 socket.on("newGame", (data) => {
   gameStarter = true;
   const roomUniqueID = data.roomUniqueID;
@@ -851,6 +890,27 @@ socket.on("newGame", (data) => {
     "startButton",
   ) as HTMLButtonElement;
   startGameButton.onclick = startGame;
+  
+  const settingsArea = document.getElementById("settingsArea");
+  settingsArea.style.display = "block";
+
+  document.getElementById("modeSelector").addEventListener("change", onModeSelection);
+  const genCheckboxes = document.getElementById("genCheckboxes");
+  for (let i = 0; i < Object.keys(pokemonWords).length; i++) {
+    const containerDiv = document.createElement("div");
+    const strLabel = `Gen ${i + 1}`;
+    const label = document.createElement("label");
+    label.setAttribute("for", strLabel);
+    label.innerText = strLabel;
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = true;
+    checkbox.id = strLabel;
+    containerDiv.appendChild(checkbox);
+    containerDiv.appendChild(label);
+    containerDiv.appendChild(document.createElement("br"));
+    genCheckboxes.appendChild(containerDiv);
+  }
 });
 
 socket.on("playersConnected", (data) => {

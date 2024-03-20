@@ -27,7 +27,7 @@
             <div>Display Name:</div>
             <div id="displayName"></div>
           </div>
-          <br />
+          <br/>
           <button id="createGameButton">Create Game</button>
           <div>or</div>
           <input type="text" id="roomUniqueID" />
@@ -47,12 +47,49 @@
                 <button id="startButton" style="display: none">Start Game</button>
               </div>
             </div>
-            <div id="game-chat-area">
-              <h2 style="margin-top: -25px">Chatbox:</h2>
-              <div id="chatbox"></div>
-              <div id="message-sending-area">
-                <input type="text" maxlength="200"; id="message" />
-                <button id="sendMessageButton">Send</button>
+            <div id="bottom-area" class="flex-container center">
+              <div id="game-chat-area">
+                <h2 style="margin-top: -25px">Chatbox:</h2>
+                <div id="chatbox"></div>
+                <div id="message-sending-area">
+                  <input type="text" maxlength="200"; id="message" />
+                  <button id="sendMessageButton">Send</button>
+                </div>
+              </div>
+              <div id="settingsArea" style="width: 250px; height: 300px; display: none;">
+                <label for="modeSelector">Select Game Mode: </label>
+                <select id="modeSelector">
+                  <option value="standardSettings">Standard</option>
+                  <option value="pokemonSettings">Pokemon</option>
+                  <option value="customSettings">Custom</option>
+                </select>
+                <br/>
+                <br/>
+                <div id="standardSettings" style="display: block;">
+                  <div id="standardDescription">
+                    This mode is the default. It uses a large bank of preset random words.
+                  </div>
+                </div>
+                <div id="pokemonSettings" style="display: none;">
+                  <div id="pokemonDescription">
+                    This mode only has the names of Pokemon for words.
+                  </div>
+                  <div>
+                    <br/>
+                    <div>Included Generations:</div>
+                    <div id="genCheckboxes">
+                      
+                    </div>
+                  </div>
+                </div>
+                <div id="customSettings" style="display: none;">
+                  <div id="customDescription">
+                    <strong style="color: darkgoldenrod">THIS MODE CANNOT BE PLAYED YET!</strong>
+                    <br>
+                    <br>
+                    <!-- <div>This mode allows you to input a custom word bank.</div> -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>

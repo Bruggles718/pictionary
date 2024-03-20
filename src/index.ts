@@ -9,6 +9,8 @@ const server = http.createServer(app);
 import { Server } from "socket.io";
 import { Player } from "./Player.js";
 import { Message } from "./Message.js";
+import { wordsList2 } from "./Words.js";
+import { pokemonWords } from "./PokemonWords.js";
 
 const io = new Server(server);
 
@@ -235,10 +237,11 @@ io.on("connection", (socket) => {
     }
   };
 
-  socket.on("startGame", (data) => {
+  const startGame = (data, i_wordBank: Array<string>) => {
     const roomID = data.roomID;
     const room = rooms[roomID];
     if (!room) return;
+    room.initWordBank(i_wordBank);
     room.m_started = true;
     socket.to(roomID).emit("showGameArea", { roomID: roomID });
     socket.emit("showGameArea", { roomID: roomID });
@@ -247,6 +250,29 @@ io.on("connection", (socket) => {
     room.updateCurrentArtist();
     room.setNewRandomWord();
     updateArtistClient(roomID);
+  }
+
+  socket.on("startGame", (data) => {
+    startGame(data, [...wordsList2]);
+  });
+
+  socket.on("startGamePokemon", (data) => {
+    const genKeys = Object.keys(pokemonWords);
+    const includedGens = data.includedGens;
+    let wordBank = [];
+    for (let i = 0; i < includedGens.length; i++) {
+      const genKeyIdx = includedGens[i];
+      const genKey = genKeys[genKeyIdx];
+      wordBank = [...wordBank, ...pokemonWords[genKey]];
+    }
+    const startData = {
+      roomID: data.roomID
+    }
+    startGame(startData, wordBank);
+  });
+
+  socket.on("startGameCustom", (data) => {
+    
   });
 
   socket.on("startDrawingServer", (data) => {

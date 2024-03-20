@@ -3,6 +3,10 @@
     src: url(Menlo-Regular.ttf);
 }
 
+.hidden {
+    display: none;
+}
+
 .transition {
     transition: color 0.25s, background-color 0.25s;
 }
@@ -123,7 +127,8 @@
 #chatbox {
     width: 300px;
     height: 126px;
-    overflow:auto;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 #scoreboard {
@@ -284,7 +289,7 @@ button.dark {
     #chatbox {
         width: 300px;
         height: 252px;
-        overflow:auto;
-        text-overflow: break-word;
+        overflow-y:auto;
+        overflow-x:hidden;
     }
 }
