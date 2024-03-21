@@ -485,7 +485,17 @@ io.on("connection", (socket) => {
       socket.emit("setupMessages", { playerID: data.playerID });
       room.loadCachedData(data.playerID);
       if (room.m_started) {
-        socket.emit("showGameArea", {roomID: data.roomUniqueID, allowSpellingPrediction: room.m_allowSpellingPrediction});
+        let showGameAreaData: {[index: string]: any} = { 
+          roomID: data.roomUniqueID, 
+          allowSpellingPrediction: room.m_allowSpellingPrediction
+        };
+        if (room.m_allowSpellingPrediction) {
+          showGameAreaData = {
+            ...showGameAreaData,
+            wordBank: room.m_allowSpellingPrediction
+          }
+        }        
+        socket.emit("showGameArea", showGameAreaData);
         sendScoreboard(room);
         const timeRoomToSend = {
           m_id: room.m_id,
