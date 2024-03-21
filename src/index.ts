@@ -492,7 +492,7 @@ io.on("connection", (socket) => {
         if (room.m_allowSpellingPrediction) {
           showGameAreaData = {
             ...showGameAreaData,
-            wordBank: room.m_allowSpellingPrediction
+            wordBank: room.m_wordBank
           }
         }        
         socket.emit("showGameArea", showGameAreaData);
